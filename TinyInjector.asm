@@ -27,53 +27,36 @@ modulename db "kernel32.dll",0
 p32fAName db "Process32First",0
 p32nAName db "Process32Next",0
 loadlibraryStr db "LoadLibraryA",0
-exitthreadstr db "ExitThread",0
 
 p32fA dd 00000000
 p32nA dd 00000000
 loadlibraryAddr dd 00000000
-exitthreadaddr dd 00000000
 
 allocbase dd 00000000
-shellcode db 0B8h,00,00,00,00,068h,00,00,00,00,0FFh,0D0h,0B8h,00,00,00,00,0FFh,0D0h
 
-.code    
-;--------------------------
-fastexit proc
-fn ExitProcess,0
-fastexit endp
-;--------------------------
-Process32FirstA proc
+.code
 
-jmp [p32fA]
+gmha proc var1:DWORD
 
-Process32FirstA endp
-;--------------------------
-Process32NextA proc
+fn GetProcAddress,ebx,var1
+test eax,eax
+je EXIT
+ret 4
 
-jmp [p32nA]
-
-Process32NextA endp
-;--------------------------
+gmha endp
+    
 start:
     fn GetModuleHandleA,offset modulename
     mov ebx,eax
-    fn GetProcAddress,ebx,offset p32fAName
-    test eax,eax
-    je EXIT
+
+    invoke gmha,offset p32fAName
     mov [p32fA],eax
-    fn GetProcAddress,ebx,offset p32nAName
-    test eax,eax
-    je EXIT
+
+    invoke gmha,offset p32nAName
     mov [p32nA],eax
-    fn GetProcAddress,ebx,offset loadlibraryStr
-    test eax,eax
-    je EXIT
+
+    invoke gmha,offset loadlibraryStr
     mov [loadlibraryAddr],eax
-    fn GetProcAddress,ebx,offset exitthreadstr
-    test eax,eax
-    je EXIT
-    mov [exitthreadaddr],eax
     
     fn GetCurrentDirectory,255,&currentdir
     fn crt_strcat,offset currentdir,offset dllname
@@ -89,7 +72,7 @@ start:
 
     push offset ps
     push handle
-    invoke Process32FirstA
+    call p32fA
 
     test al,al
     je EXIT
@@ -104,7 +87,7 @@ CMPNAME:
 
     push offset ps
     push handle
-    invoke Process32NextA
+    call p32nA
     test al,al
     je EXIT
     jmp CMPNAME
@@ -124,35 +107,17 @@ INJECT:
     je EXIT
     mov [allocbase],eax
 
-    mov ebx,allocbase
-    add ebx,070h
-    
-    mov eax,offset shellcode
-    mov ecx,loadlibraryAddr
-    mov [eax+1],ecx
-    mov [eax+6],ebx
-    mov ecx,exitthreadaddr
-    mov [eax+13],ecx
-    
-    fn WriteProcessMemory,handle,allocbase,eax,19,0
-    test al,al
-    je FREEANDEXIT
-    
     fn crt_strlen,offset currentdir
-    fn WriteProcessMemory,handle,ebx,offset currentdir,eax,0
+    fn WriteProcessMemory,handle,allocbase,offset currentdir,eax,0
     test al,al
     je FREEANDEXIT                                         ;library dir           
     
-    fn CreateRemoteThread,handle,0,0,allocbase,0,0,threadid
+    fn CreateRemoteThread,handle,0,0,loadlibraryAddr,allocbase,0,threadid
     test eax,eax
     je EXIT
 
-    fn WaitForSingleObject,threadid,0FFFFFFFFh
-    
-NORMALEXIT:
     fn CloseHandle,handle
-    fn VirtualFreeEx,handle,allocbase,01000h,04000h
-    invoke fastexit
+    jmp EXITT
 
 FREEANDEXIT:
     fn CloseHandle,handle
@@ -161,6 +126,7 @@ FREEANDEXIT:
 
 EXIT:
     fn MessageBox,0,"failed to inject",0,MB_OK
-    invoke fastexit
+EXITT:
+    fn ExitProcess,0
 
 end     start
