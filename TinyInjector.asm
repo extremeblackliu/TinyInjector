@@ -138,7 +138,6 @@ INJECT:
     test al,al
     je FREEANDEXIT
     
-	sub ebx,010h
     fn crt_strlen,offset currentdir
     fn WriteProcessMemory,handle,ebx,offset currentdir,eax,0
     test al,al
