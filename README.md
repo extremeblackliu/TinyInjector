@@ -2,10 +2,12 @@
 A Tiny Size LoadLibrary Injector
 
 default target:
-csgo.exe
+
+"csgo.exe"
 
 default dllname:
-\CurrentPath\1.dll
+
+"\CurrentPath\1.dll"
 
 written on MASM
 
