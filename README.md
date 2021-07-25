@@ -1,9 +1,11 @@
 # TinyInjector
 A Tiny Size LoadLibrary Injector
 
-default target:csgo.exe
+default target:
+csgo.exe
 
-default dllname:\CurrentPath\1.dll
+default dllname:
+\CurrentPath\1.dll
 
 written on MASM
 
