@@ -15,9 +15,9 @@ include \masm32\macros\macros.asm
 
 .data
 
-dllname db "\1.dll",0
+dllname db "\1.dll",0       ; dll name (relative path)
 currentdir db 255 dup(?)
-processname db "csgo.exe",0
+processname db "csgo.exe",0 ; game name
 handle dd 00000000
 threadid dd 00000000
 ps db 128 dup(?)
