@@ -13,4 +13,4 @@ To avoid VAC bans, you can use [TinyBypass](https://github.com/extremeblackliu/T
 
 Process name and dll can be changed in lines 18 and 20.
 
-If you are using a custom process name together with [TinyBypass](https://github.com/extremeblackliu/TinyBypass), you also need to change the process name in TinyBypass.
+If you are using a custom process name together with [TinyBypass](https://github.com/extremeblackliu/TinyBypass), you also need to [change the process name in TinyBypass](https://github.com/extremeblackliu/TinyBypass#default-configuration).
