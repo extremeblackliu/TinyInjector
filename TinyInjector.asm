@@ -110,7 +110,7 @@ INJECT:
     fn crt_strlen,offset currentdir
     fn WriteProcessMemory,handle,allocbase,offset currentdir,eax,0
     test al,al
-    je FREEANDEXIT                                         ;library dir           
+    je EXIT                                         ;library dir           
     
     fn CreateRemoteThread,handle,0,0,loadlibraryAddr,allocbase,0,threadid
     test eax,eax
@@ -118,12 +118,7 @@ INJECT:
 
     fn CloseHandle,handle
     jmp EXITT
-
-FREEANDEXIT:
-    fn CloseHandle,handle
-    fn VirtualFreeEx,handle,allocbase,01000h,04000h
-    jmp EXIT
-
+    
 EXIT:
     fn MessageBox,0,"failed to inject",0,MB_OK
 EXITT:
