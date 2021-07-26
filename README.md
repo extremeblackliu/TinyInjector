@@ -1,14 +1,13 @@
 # TinyInjector
-A Tiny Size LoadLibrary Injector
 
-default target:
-**"csgo.exe"**
+A tiny injector using LoadLibrary written in ASM.
 
-default dllname:
-**"\CurrentPath\1.dll"**
+This injector uses plain LoadLibrary without any protection or bypasses. This will probably get you VAC banend or the injection will fail due to trusted launch.
+You can use your favorite VAC bypass in conjunction with this injector.
 
-written on MASM
+## Default configuration
 
-# !WARNING!
+- Process name: `csgo.exe`
+- DLL path: `1.dll` (relative to current working directory)
 
-- this injector didnt included VAC-Hook-Bypass , you may need to use VAC-Hook-Bypass first to use it normally
+Process name and dll can be changed in lines 18 and 20.
