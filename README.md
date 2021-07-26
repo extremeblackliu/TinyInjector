@@ -4,7 +4,7 @@ A tiny injector using LoadLibrary written in ASM.
 
 This injector uses plain LoadLibrary without any protection or bypasses.
 
-you need to use https://github.com/extremeblackliu/TinyBypass to bypass loadlibrary hook
+To inject with trusted launch, you can use [TinyBypass](https://github.com/extremeblackliu/TinyBypass) (csgo only).
 
 ## Default configuration
 
