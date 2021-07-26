@@ -2,8 +2,9 @@
 
 A tiny injector using LoadLibrary written in ASM.
 
-This injector uses plain LoadLibrary without any protection or bypasses. This will probably get you VAC banend or the injection will fail due to trusted launch.
-You can use your favorite VAC bypass in conjunction with this injector.
+This injector uses plain LoadLibrary without any protection or bypasses.
+
+you need to use https://github.com/extremeblackliu/TinyBypass to bypass loadlibrary hook
 
 ## Default configuration
 
